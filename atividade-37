@@ -1,0 +1,49 @@
+#include <stdio.h>
+#include <locale.h>
+#define MAX 100
+
+typedef struct {
+    int itens[MAX];
+    int frente, tras;
+} Fila;
+
+void inicializar(Fila *f) {
+    f->frente = 0;
+    f->tras = -1;
+}
+
+int estaVazia(Fila *f) {
+    return f->frente > f->tras;
+}
+
+int estaCheia(Fila *f) {
+    return f->tras == MAX - 1;
+}
+
+void enfileirar(Fila *f, int valor) {
+    if (estaCheia(f)) {
+        printf("Fila cheia!\n");
+    } else {
+        f->itens[++(f->tras)] = valor;
+    }
+}
+
+int desenfileirar(Fila *f) {
+    if (estaVazia(f)) {
+        printf("Fila vazia!\n");
+        return -1;
+    } else {
+        return f->itens[f->frente++];
+    }
+}
+
+int main() {
+    setlocale(LC_ALL, "Portuguese");
+    Fila f;
+    inicializar(&f);
+    enfileirar(&f, 10);
+    enfileirar(&f, 20);
+    printf("Desenfileirado: %d\n", desenfileirar(&f));
+    printf("Desenfileirado: %d\n", desenfileirar(&f));
+    return 0;
+}
