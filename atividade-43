@@ -1,0 +1,31 @@
+#include <stdio.h>
+#include <locale.h>
+
+int maiorSubsequenciaCrescente(int arr[], int n) {
+    setlocale(LC_ALL, "Portuguese");
+    int max = 1, len = 1;
+
+    for (int i = 1; i < n; i++) {
+        if (arr[i] > arr[i - 1]) {
+            len++;
+        } else {
+            if (len > max)
+                max = len;
+            len = 1;
+        }
+    }
+
+    if (len > max) max = len;
+
+    return max;
+}
+
+int main() {
+    setlocale(LC_ALL, "Portuguese");
+    int arr[] = {3, 10, 2, 1, 20, 4, 2, 10};
+    int n = sizeof(arr) / sizeof(arr[0]);
+
+    printf("A maior subsequência crescente tem comprimento: %d\n", maiorSubsequenciaCrescente(arr, n));
+
+    return 0;
+}
