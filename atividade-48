@@ -1,0 +1,49 @@
+#include <stdio.h>
+#include <locale.h>
+
+#define ANDARES 10
+
+void subir(int *andar) {
+    if (*andar < ANDARES) {
+        (*andar)++;
+        printf("Subindo para o andar %d\n", *andar);
+    } else {
+        printf("Já está no último andar.\n");
+    }
+}
+
+void descer(int *andar) {
+    if (*andar > 0) {
+        (*andar)--;
+        printf("Descendo para o andar %d\n", *andar);
+    } else {
+        printf("Já está no térreo.\n");
+    }
+}
+
+int main() {
+    setlocale(LC_ALL, "Portuguese");
+    int andar = 0;
+    char comando;
+
+    printf("Simulação de Elevador\n");
+    printf("Comandos: s (subir), d (descer), q (sair)\n");
+
+    while (1) {
+        printf("Digite o comando: ");
+        scanf(" %c", &comando);
+
+        if (comando == 's') {
+            subir(&andar);
+        } else if (comando == 'd') {
+            descer(&andar);
+        } else if (comando == 'q') {
+            break;
+        } else {
+            printf("Comando inválido.\n");
+        }
+    }
+
+    printf("Simulação encerrada.\n");
+    return 0;
+}
