@@ -1,0 +1,34 @@
+#include <stdio.h>
+#include <locale.h>
+
+void insertionSort(int arr[], int n) {
+    setlocale(LC_ALL, "Portuguese");
+    int i, key, j;
+    for (i = 1; i < n; i++) {
+        key = arr[i];
+        j = i - 1;
+        while (j >= 0 && arr[j] > key) {
+            arr[j + 1] = arr[j];
+            j = j - 1;
+        }
+        arr[j + 1] = key;
+    }
+}
+
+void imprimirArray(int arr[], int tamanho) {
+    setlocale(LC_ALL, "Portuguese");
+    for (int i = 0; i < tamanho; i++) {
+        printf("%d ", arr[i]);
+    }
+    printf("\n");
+}
+
+int main() {
+    setlocale(LC_ALL, "Portuguese");
+    int arr[] = {12, 11, 13, 5, 6};
+    int n = sizeof(arr)/sizeof(arr[0]);
+    insertionSort(arr, n);
+    printf("Array ordenado com Insertion Sort: \n");
+    imprimirArray(arr, n);
+    return 0;
+}
