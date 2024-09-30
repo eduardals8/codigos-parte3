@@ -1,0 +1,54 @@
+#include <stdio.h>
+#include <ctype.h>
+#include <locale.h>
+
+#define MAX 100
+
+typedef struct {
+    int topo;
+    int itens[MAX];
+} Pilha;
+
+void inicializar(Pilha *p) {
+    p->topo = -1;
+}
+
+int estaVazia(Pilha *p) {
+    return p->topo == -1;
+}
+
+void empilhar(Pilha *p, int valor) {
+    p->itens[++(p->topo)] = valor;
+}
+
+int desempilhar(Pilha *p) {
+    return p->itens[(p->topo)--];
+}
+
+int avaliarPosfixa(char* exp) {
+    Pilha p;
+    inicializar(&p);
+    for (int i = 0; exp[i]; i++) {
+        if (isdigit(exp[i]))
+            empilhar(&p, exp[i] - '0');
+        else {
+            int val1 = desempilhar(&p);
+            int val2 = desempilhar(&p);
+            switch (exp[i]) {
+                case '+': empilhar(&p, val2 + val1); break;
+                case '-': empilhar(&p, val2 - val1); break;
+                case '*': empilhar(&p, val2 * val1); break;
+                case '/': empilhar(&p, val2 / val1); break;
+            }
+        }
+    }
+    return desempilhar(&p);
+}
+
+int main() {
+    setlocale(LC_ALL, "Portuguese");
+    char exp[] = "231*+9-";
+    printf("Expressão Pós-fixa: %s\n", exp);
+    printf("Resultado: %d\n", avaliarPosfixa(exp));
+    return 0;
+}
