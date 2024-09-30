@@ -1,0 +1,38 @@
+#include <stdio.h>
+#include <string.h>
+#include <locale.h>
+
+void cifraDeCesar(char texto[], int chave) {
+    setlocale(LC_ALL, "Portuguese");
+    int i;
+    char c;
+    
+    for (i = 0; texto[i] != '\0'; i++) {
+        c = texto[i];
+        // Aplica a cifra em letras maiúsculas e minúsculas
+        if (c >= 'a' && c <= 'z') {
+            c = (c - 'a' + chave) % 26 + 'a';
+        } else if (c >= 'A' && c <= 'Z') {
+            c = (c - 'A' + chave) % 26 + 'A';
+        }
+        texto[i] = c;
+    }
+}
+
+int main() {
+    setlocale(LC_ALL, "Portuguese");
+    char texto[100];
+    int chave;
+
+    printf("Digite uma mensagem para criptografar: ");
+    fgets(texto, 100, stdin);
+
+    printf("Digite o valor da chave: ");
+    scanf("%d", &chave);
+
+    cifraDeCesar(texto, chave);
+
+    printf("Mensagem criptografada: %s\n", texto);
+
+    return 0;
+}
