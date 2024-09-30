@@ -1,0 +1,67 @@
+#include <stdio.h>
+#include <locale.h>
+
+char tabuleiro[3][3];
+int jogadorAtual = 1;
+
+void inicializarTabuleiro() {
+    setlocale(LC_ALL, "Portuguese");
+    for (int i = 0; i < 3; i++) {
+        for (int j = 0; j < 3; j++) {
+            tabuleiro[i][j] = ' ';
+        }
+    }
+}
+
+void mostrarTabuleiro() {
+    setlocale(LC_ALL, "Portuguese");
+    printf(" %c | %c | %c \n", tabuleiro[0][0], tabuleiro[0][1], tabuleiro[0][2]);
+    printf("---|---|---\n");
+    printf(" %c | %c | %c \n", tabuleiro[1][0], tabuleiro[1][1], tabuleiro[1][2]);
+    printf("---|---|---\n");
+    printf(" %c | %c | %c \n", tabuleiro[2][0], tabuleiro[2][1], tabuleiro[2][2]);
+}
+
+int verificarVencedor() {
+    for (int i = 0; i < 3; i++) {
+        if (tabuleiro[i][0] == tabuleiro[i][1] && tabuleiro[i][1] == tabuleiro[i][2] && tabuleiro[i][0] != ' ')
+            return jogadorAtual;
+        if (tabuleiro[0][i] == tabuleiro[1][i] && tabuleiro[1][i] == tabuleiro[2][i] && tabuleiro[0][i] != ' ')
+            return jogadorAtual;
+    }
+    if (tabuleiro[0][0] == tabuleiro[1][1] && tabuleiro[1][1] == tabuleiro[2][2] && tabuleiro[0][0] != ' ')
+        return jogadorAtual;
+    if (tabuleiro[0][2] == tabuleiro[1][1] && tabuleiro[1][1] == tabuleiro[2][0] && tabuleiro[0][2] != ' ')
+        return jogadorAtual;
+    return 0;
+}
+
+void jogar() {
+    int linha, coluna;
+    mostrarTabuleiro();
+    printf("Jogador %d, entre com a linha e a coluna: ", jogadorAtual);
+    scanf("%d %d", &linha, &coluna);
+    if (linha < 1 || linha > 3 || coluna < 1 || coluna > 3 || tabuleiro[linha-1][coluna-1] != ' ') {
+        printf("Jogada inválida. Tente novamente.\n");
+        jogar();
+    } else {
+        tabuleiro[linha-1][coluna-1] = (jogadorAtual == 1) ? 'X' : 'O';
+        jogadorAtual = (jogadorAtual == 1) ? 2 : 1;
+    }
+}
+
+int main() {
+    setlocale(LC_ALL, "Portuguese");
+    inicializarTabuleiro();
+    int vencedor = 0;
+    for (int i = 0; i < 9 && !vencedor; i++) {
+        jogar();
+        vencedor = verificarVencedor();
+    }
+    mostrarTabuleiro();
+    if (vencedor)
+        printf("Jogador %d venceu!\n", vencedor);
+    else
+        printf("Empate!\n");
+    return 0;
+}
