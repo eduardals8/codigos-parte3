@@ -1,0 +1,37 @@
+#include <stdio.h>
+#include <locale.h>
+
+int reconhecimentoDePadrao(int vetor[], int tamanho, int padrao[], int tamanhoPadrao) {
+    setlocale(LC_ALL, "Portuguese");
+    
+    for (int i = 0; i <= tamanho - tamanhoPadrao; i++) {
+        int j;
+        for (j = 0; j < tamanhoPadrao; j++) {
+            if (vetor[i + j] != padrao[j])
+                break;
+        }
+        if (j == tamanhoPadrao) {
+            return i;  // Padrão encontrado no índice i
+        }
+    }
+    return -1;  // Padrão não encontrado
+}
+
+int main() {
+    setlocale(LC_ALL, "Portuguese");
+
+    int vetor[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+    int padrao[] = {4, 5, 6};
+    int tamanho = sizeof(vetor) / sizeof(vetor[0]);
+    int tamanhoPadrao = sizeof(padrao) / sizeof(padrao[0]);
+
+    int resultado = reconhecimentoDePadrao(vetor, tamanho, padrao, tamanhoPadrao);
+
+    if (resultado != -1) {
+        printf("Padrão encontrado no índice %d\n", resultado);
+    } else {
+        printf("Padrão não encontrado\n");
+    }
+
+    return 0;
+}
