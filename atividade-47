@@ -1,0 +1,81 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <locale.h>
+
+#define MAX 100
+
+typedef struct {
+    int u, v, peso;
+} Aresta;
+
+typedef struct {
+    int parent, rank;
+} Subconjunto;
+
+int comparar(const void *a, const void *b) {
+    return ((Aresta *)a)->peso > ((Aresta *)b)->peso;
+}
+
+int encontrar(Subconjunto subconjuntos[], int i) {
+    if (subconjuntos[i].parent != i)
+        subconjuntos[i].parent = encontrar(subconjuntos, subconjuntos[i].parent);
+    return subconjuntos[i].parent;
+}
+
+void unir(Subconjunto subconjuntos[], int x, int y) {
+    int raizX = encontrar(subconjuntos, x);
+    int raizY = encontrar(subconjuntos, y);
+
+    if (subconjuntos[raizX].rank < subconjuntos[raizY].rank)
+        subconjuntos[raizX].parent = raizY;
+    else if (subconjuntos[raizX].rank > subconjuntos[raizY].rank)
+        subconjuntos[raizY].parent = raizX;
+    else {
+        subconjuntos[raizY].parent = raizX;
+        subconjuntos[raizX].rank++;
+    }
+}
+
+void kruskal(Aresta arestas[], int V, int E) {
+    setlocale(LC_ALL, "Portuguese");
+    qsort(arestas, E, sizeof(Aresta), comparar);
+
+    Subconjunto *subconjuntos = malloc(V * sizeof(Subconjunto));
+    for (int v = 0; v < V; v++) {
+        subconjuntos[v].parent = v;
+        subconjuntos[v].rank = 0;
+    }
+
+    Aresta resultado[MAX];
+    int e = 0, i = 0;
+
+    while (e < V - 1 && i < E) {
+        Aresta proximaAresta = arestas[i++];
+
+        int x = encontrar(subconjuntos, proximaAresta.u);
+        int y = encontrar(subconjuntos, proximaAresta.v);
+
+        if (x != y) {
+            resultado[e++] = proximaAresta;
+            unir(subconjuntos, x, y);
+        }
+    }
+
+    printf("As arestas na MST são:\n");
+    for (int i = 0; i < e; i++)
+        printf("%d -- %d == %d\n", resultado[i].u, resultado[i].v, resultado[i].peso);
+
+    free(subconjuntos);
+}
+
+int main() {
+    setlocale(LC_ALL, "Portuguese");
+
+    int V = 4;
+    int E = 5;
+    Aresta arestas[] = {{0, 1, 10}, {0, 2, 6}, {0, 3, 5}, {1, 3, 15}, {2, 3, 4}};
+
+    kruskal(arestas, V, E);
+
+    return 0;
+}
